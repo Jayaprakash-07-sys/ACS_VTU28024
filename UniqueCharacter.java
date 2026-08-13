@@ -1,0 +1,26 @@
+import java.util.Scanner;
+
+class UniqueCharacter {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        String s = sc.nextLine();
+
+        int[] count = new int[26];
+
+        for (char c : s.toCharArray()) {
+            count[c - 'a']++;
+        }
+
+        int result = -1;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (count[s.charAt(i) - 'a'] == 1) {
+                result = i;
+                break;
+            }
+        }
+
+        System.out.println(result);
+    }
+}
