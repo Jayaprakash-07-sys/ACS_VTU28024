@@ -1,0 +1,72 @@
+public class LinkedListCycleII {
+
+    // Definition of ListNode
+    static class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int val) {
+            this.val = val;
+            this.next = null;
+        }
+    }
+
+    public static ListNode detectCycle(ListNode head) {
+
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // Step 1: Detect whether a cycle exists
+        while (fast != null && fast.next != null) {
+
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                break;
+            }
+        }
+
+        // No cycle
+        if (fast == null || fast.next == null) {
+            return null;
+        }
+
+        // Step 2: Find the beginning of the cycle
+        slow = head;
+
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return slow;
+    }
+
+    public static void main(String[] args) {
+
+        // Create nodes
+        ListNode head = new ListNode(3);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(0);
+        head.next.next.next = new ListNode(-4);
+
+        // Create cycle:
+        // 3 -> 2 -> 0 -> -4
+        //      ^          |
+        //      |__________|
+        head.next.next.next.next = head.next;
+
+        ListNode cycleStart = detectCycle(head);
+
+        if (cycleStart != null) {
+            System.out.println("Cycle begins at node: " + cycleStart.val);
+        } else {
+            System.out.println("No cycle");
+        }
+    }
+}
