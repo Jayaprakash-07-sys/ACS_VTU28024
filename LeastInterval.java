@@ -1,0 +1,55 @@
+public class LeastInterval {
+
+    public static int leastInterval(char[] tasks, int n) {
+
+        // Count frequency of each task
+        int[] frequency = new int[26];
+
+        for (char task : tasks) {
+            frequency[task - 'A']++;
+        }
+
+        // Find the maximum frequency
+        int maxFrequency = 0;
+
+        for (int count : frequency) {
+            maxFrequency = Math.max(maxFrequency, count);
+        }
+
+        // Count how many tasks have the maximum frequency
+        int maxCount = 0;
+
+        for (int count : frequency) {
+            if (count == maxFrequency) {
+                maxCount++;
+            }
+        }
+
+        // Calculate minimum intervals
+        int intervals = (maxFrequency - 1) * (n + 1) + maxCount;
+
+        // We cannot have fewer intervals than the number of tasks
+        return Math.max(intervals, tasks.length);
+    }
+
+    public static void main(String[] args) {
+
+        // Example 1
+        char[] tasks1 = {'A', 'A', 'A', 'B', 'B', 'B'};
+        int n1 = 2;
+
+        System.out.println(leastInterval(tasks1, n1));
+
+        // Example 2
+        char[] tasks2 = {'A', 'C', 'A', 'B', 'D', 'B'};
+        int n2 = 1;
+
+        System.out.println(leastInterval(tasks2, n2));
+
+        // Example 3
+        char[] tasks3 = {'A', 'A', 'A', 'B', 'B', 'B'};
+        int n3 = 3;
+
+        System.out.println(leastInterval(tasks3, n3));
+    }
+}

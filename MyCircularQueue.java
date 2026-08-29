@@ -1,0 +1,95 @@
+class MyCircularQueue {
+
+    private int[] queue;
+    private int front;
+    private int rear;
+    private int size;
+    private int capacity;
+
+    // Constructor
+    public MyCircularQueue(int k) {
+        capacity = k;
+        queue = new int[k];
+        front = 0;
+        rear = 0;
+        size = 0;
+    }
+
+    // Insert an element
+    public boolean enQueue(int value) {
+        if (isFull()) {
+            return false;
+        }
+
+        queue[rear] = value;
+        rear = (rear + 1) % capacity;
+        size++;
+
+        return true;
+    }
+
+    // Delete an element
+    public boolean deQueue() {
+        if (isEmpty()) {
+            return false;
+        }
+
+        front = (front + 1) % capacity;
+        size--;
+
+        return true;
+    }
+
+    // Get the front element
+    public int Front() {
+        if (isEmpty()) {
+            return -1;
+        }
+
+        return queue[front];
+    }
+
+    // Get the rear element
+    public int Rear() {
+        if (isEmpty()) {
+            return -1;
+        }
+
+        int index = (rear - 1 + capacity) % capacity;
+        return queue[index];
+    }
+
+    // Check if queue is empty
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    // Check if queue is full
+    public boolean isFull() {
+        return size == capacity;
+    }
+}
+
+
+// Main class for testing
+public class Main {
+
+    public static void main(String[] args) {
+
+        MyCircularQueue myCircularQueue = new MyCircularQueue(3);
+
+        System.out.println(myCircularQueue.enQueue(1)); // true
+        System.out.println(myCircularQueue.enQueue(2)); // true
+        System.out.println(myCircularQueue.enQueue(3)); // true
+        System.out.println(myCircularQueue.enQueue(4)); // false
+
+        System.out.println(myCircularQueue.Rear());     // 3
+        System.out.println(myCircularQueue.isFull());   // true
+
+        System.out.println(myCircularQueue.deQueue());  // true
+
+        System.out.println(myCircularQueue.enQueue(4)); // true
+
+        System.out.println(myCircularQueue.Rear());     // 4
+    }
+}

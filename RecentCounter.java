@@ -1,0 +1,38 @@
+import java.util.LinkedList;
+import java.util.Queue;
+
+class RecentCounter {
+
+    private Queue<Integer> requests;
+
+    // Constructor
+    public RecentCounter() {
+        requests = new LinkedList<>();
+    }
+
+    // Add request and return number of recent requests
+    public int ping(int t) {
+
+        requests.offer(t);
+
+        // Remove requests outside the range [t - 3000, t]
+        while (requests.peek() < t - 3000) {
+            requests.poll();
+        }
+
+        return requests.size();
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        RecentCounter recentCounter = new RecentCounter();
+
+        System.out.println(recentCounter.ping(1));
+        System.out.println(recentCounter.ping(100));
+        System.out.println(recentCounter.ping(3001));
+        System.out.println(recentCounter.ping(3002));
+    }
+}
