@@ -1,0 +1,43 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Read number of products
+        int n = sc.nextInt();
+
+        HashMap<Integer, Integer> frequency = new HashMap<>();
+
+        // Count frequency of each product ID
+        for (int i = 0; i < n; i++) {
+            int productId = sc.nextInt();
+
+            frequency.put(
+                productId,
+                frequency.getOrDefault(productId, 0) + 1
+            );
+        }
+
+        int maxFrequency = 0;
+        int productId = Integer.MAX_VALUE;
+
+        // Find most frequent product
+        // If frequency is same, choose smaller ID
+        for (Map.Entry<Integer, Integer> entry : frequency.entrySet()) {
+            int id = entry.getKey();
+            int count = entry.getValue();
+
+            if (count > maxFrequency ||
+                (count == maxFrequency && id < productId)) {
+
+                maxFrequency = count;
+                productId = id;
+            }
+        }
+
+        System.out.println(productId + " " + maxFrequency);
+
+        sc.close();
+    }
+}
