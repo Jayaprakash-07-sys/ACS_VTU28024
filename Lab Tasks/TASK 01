@@ -1,0 +1,42 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        // Read number of minutes
+        int n = sc.nextInt();
+
+        // Read vehicle counts
+        int[] vehicles = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            vehicles[i] = sc.nextInt();
+        }
+
+        // Read window size
+        int k = sc.nextInt();
+
+        // Sum of first k minutes
+        int currentSum = 0;
+
+        for (int i = 0; i < k; i++) {
+            currentSum += vehicles[i];
+        }
+
+        int maxSum = currentSum;
+
+        // Sliding window
+        for (int i = k; i < n; i++) {
+            currentSum += vehicles[i];
+            currentSum -= vehicles[i - k];
+
+            maxSum = Math.max(maxSum, currentSum);
+        }
+
+        // Display result
+        System.out.println(maxSum);
+
+        sc.close();
+    }
+}
