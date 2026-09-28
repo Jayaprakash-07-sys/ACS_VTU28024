@@ -1,0 +1,62 @@
+import java.util.*;
+
+class Main {
+
+    public static int findKthLargest(int[] nums, int k) {
+        int target = nums.length - k;
+
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left <= right) {
+            int pivotIndex = partition(nums, left, right);
+
+            if (pivotIndex == target) {
+                return nums[pivotIndex];
+            } 
+            else if (pivotIndex < target) {
+                left = pivotIndex + 1;
+            } 
+            else {
+                right = pivotIndex - 1;
+            }
+        }
+
+        return -1;
+    }
+
+    public static int partition(int[] nums, int left, int right) {
+        int pivot = nums[right];
+        int index = left;
+
+        for (int i = left; i < right; i++) {
+            if (nums[i] <= pivot) {
+                int temp = nums[i];
+                nums[i] = nums[index];
+                nums[index] = temp;
+                index++;
+            }
+        }
+
+        int temp = nums[index];
+        nums[index] = nums[right];
+        nums[right] = temp;
+
+        return index;
+    }
+
+    public static void main(String[] args) {
+
+        // Example 1
+        int[] nums1 = {3, 2, 1, 5, 6, 4};
+        int k1 = 2;
+
+        System.out.println(findKthLargest(nums1, k1));
+
+        // Example 2
+        int[] nums2 = {3, 2, 3, 1, 2, 4, 5, 5, 6};
+        int k2 = 4;
+
+        System.out.println(findKthLargest(nums2, k2));
+    }
+}
