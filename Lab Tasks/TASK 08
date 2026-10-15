@@ -1,0 +1,97 @@
+import java.util.*;
+
+class Main {
+    static class Node {
+        int data;
+        Node left, right;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    static Node buildTree(int[] a) {
+        if (a.length == 0 || a[0] == -1)
+            return null;
+
+        Node root = new Node(a[0]);
+        Queue<Node> q = new LinkedList<>();
+        q.add(root);
+
+        int i = 1;
+
+        while (!q.isEmpty() && i < a.length) {
+            Node cur = q.poll();
+
+            if (i < a.length && a[i] != -1) {
+                cur.left = new Node(a[i]);
+                q.add(cur.left);
+            }
+            i++;
+
+            if (i < a.length && a[i] != -1) {
+                cur.right = new Node(a[i]);
+                q.add(cur.right);
+            }
+            i++;
+        }
+
+        return root;
+    }
+
+    static boolean findPath(Node root, int value, List<Node> path) {
+        if (root == null)
+            return false;
+
+        path.add(root);
+
+        if (root.data == value)
+            return true;
+
+        if (findPath(root.left, value, path) ||
+            findPath(root.right, value, path))
+            return true;
+
+        path.remove(path.size() - 1);
+        return false;
+    }
+
+    static Node lca(Node root, int a, int b) {
+        List<Node> p1 = new ArrayList<>();
+        List<Node> p2 = new ArrayList<>();
+
+        findPath(root, a, p1);
+        findPath(root, b, p2);
+
+        Node result = null;
+        int i = 0;
+
+        while (i < p1.size() && i < p2.size()) {
+            if (p1.get(i) != p2.get(i))
+                break;
+
+            result = p1.get(i);
+            i++;
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int[] a = new int[n];
+
+        for (int i = 0; i < n; i++)
+            a[i] = sc.nextInt();
+
+        int x = sc.nextInt();
+        int y = sc.nextInt();
+
+        Node root = buildTree(a);
+        Node ans = lca(root, x, y);
+
+        System.out.println("LCA = " + ans.data);
+    }
+}
