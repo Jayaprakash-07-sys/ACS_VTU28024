@@ -1,0 +1,24 @@
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+
+        int include = 0;
+        int exclude = 0;
+
+        for (int i = 0; i < n; i++) {
+            int value = sc.nextInt();
+
+            int newInclude = exclude + value;
+            int newExclude = Math.max(include, exclude);
+
+            include = newInclude;
+            exclude = newExclude;
+        }
+
+        System.out.println(Math.max(include, exclude));
+    }
+}
