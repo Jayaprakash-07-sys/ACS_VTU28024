@@ -1,0 +1,69 @@
+import java.util.*;
+
+class Main {
+    static class Task {
+        char ch;
+        int count;
+
+        Task(char ch, int count) {
+            this.ch = ch;
+            this.count = count;
+        }
+    }
+
+    static class Cool {
+        char ch;
+        int count;
+        int ready;
+
+        Cool(char ch, int count, int ready) {
+            this.ch = ch;
+            this.count = count;
+            this.ready = ready;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        int k = sc.nextInt();
+
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            char c = sc.next().charAt(0);
+            map.put(c, map.getOrDefault(c, 0) + 1);
+        }
+
+        PriorityQueue<Task> pq =
+            new PriorityQueue<>((a, b) -> b.count - a.count);
+
+        for (Map.Entry<Character, Integer> e : map.entrySet())
+            pq.add(new Task(e.getKey(), e.getValue()));
+
+        Queue<Cool> cooldown = new LinkedList<>();
+
+        int time = 0;
+
+        while (!pq.isEmpty() || !cooldown.isEmpty()) {
+            time++;
+
+            while (!cooldown.isEmpty() &&
+                   cooldown.peek().ready <= time) {
+                Cool c = cooldown.poll();
+                pq.add(new Task(c.ch, c.count));
+            }
+
+            if (!pq.isEmpty()) {
+                Task t = pq.poll();
+                t.count--;
+
+                if (t.count > 0)
+                    cooldown.add(new Cool(t.ch, t.count, time + k + 1));
+            }
+        }
+
+        System.out.println(time);
+    }
+}
