@@ -1,0 +1,40 @@
+import java.util.*;
+
+class Main {
+    static class Event {
+        int start, end;
+
+        Event(int start, int end) {
+            this.start = start;
+            this.end = end;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int n = sc.nextInt();
+        Event[] events = new Event[n];
+
+        for (int i = 0; i < n; i++) {
+            int start = sc.nextInt();
+            int end = sc.nextInt();
+
+            events[i] = new Event(start, end);
+        }
+
+        Arrays.sort(events, (a, b) -> a.end - b.end);
+
+        int count = 0;
+        int lastEnd = -1;
+
+        for (Event e : events) {
+            if (e.start >= lastEnd) {
+                count++;
+                lastEnd = e.end;
+            }
+        }
+
+        System.out.println("MaximumEvents = " + count);
+    }
+}
