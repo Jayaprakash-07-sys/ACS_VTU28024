@@ -1,0 +1,65 @@
+import java.util.*;
+
+class Main {
+    static class Item {
+        int value, list, index;
+
+        Item(int value, int list, int index) {
+            this.value = value;
+            this.list = list;
+            this.index = index;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int m = sc.nextInt();
+        int k = sc.nextInt();
+
+        int[][] lists = new int[m][];
+
+        PriorityQueue<Item> pq =
+            new PriorityQueue<>((a, b) -> a.value - b.value);
+
+        for (int i = 0; i < m; i++) {
+            int size = sc.nextInt();
+            lists[i] = new int[size];
+
+            for (int j = 0; j < size; j++)
+                lists[i][j] = sc.nextInt();
+
+            if (size > 0)
+                pq.add(new Item(lists[i][0], i, 0));
+        }
+
+        ArrayList<Integer> merged = new ArrayList<>();
+
+        while (!pq.isEmpty()) {
+            Item x = pq.poll();
+            merged.add(x.value);
+
+            int next = x.index + 1;
+
+            if (next < lists[x.list].length) {
+                pq.add(new Item(
+                    lists[x.list][next],
+                    x.list,
+                    next
+                ));
+            }
+        }
+
+        System.out.println("Merged:");
+        for (int x : merged)
+            System.out.print(x + " ");
+
+        System.out.println();
+        System.out.println("TopK:");
+
+        for (int i = merged.size() - 1;
+             i >= Math.max(0, merged.size() - k); i--) {
+            System.out.print(merged.get(i) + " ");
+        }
+    }
+}
